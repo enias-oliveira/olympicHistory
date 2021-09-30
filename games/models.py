@@ -26,4 +26,11 @@ class Game(models.Model):
     year = models.PositiveIntegerField()
     season = models.CharField(max_length=6, choices=SEASON_CHOICES)
 
-    events = models.ManyToManyField(Competition, db_table="events")
+    competitions = models.ManyToManyField(
+        Competition, through="Event", through_fields=("game", "competition")
+    )
+
+
+class Event(models.Model):
+    game = models.ForeignKey(Game, on_delete=models.RESTRICT)
+    competition = models.ForeignKey(Competition, on_delete=models.RESTRICT)
