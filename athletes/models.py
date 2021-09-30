@@ -1,6 +1,12 @@
 from django.db import models
 
 
+class Country(models.Model):
+    name = models.CharField(max_length=255)
+    noc = models.CharField(max_length=3)
+    notes = models.CharField(max_length=255, blank=True)
+
+
 class Athlete(models.Model):
     MALE = "Male"
     FEMALE = "Female"
@@ -14,3 +20,9 @@ class Athlete(models.Model):
     age = models.PositiveIntegerField()
     height = models.PositiveIntegerField(null=True, blank=True)
     weight = models.PositiveIntegerField(null=True, blank=True)
+
+    country = models.ForeignKey(
+        Country,
+        on_delete=models.RESTRICT,
+        related_name="athletes",
+    )
