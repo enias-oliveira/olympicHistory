@@ -17,13 +17,9 @@ class AthleteSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
     def create(self, validated_data):
-        country_data = validated_data.get("country")
+        country_data = validated_data.pop("country")
         country = Country.objects.get(name=country_data.get("name"))
 
-        # Functional Approach of creating new dict
-        athlete_data = {
-            item: validated_data[item] for item in validated_data if item != "country"
-        }
-        athlete = Athlete.objects.create(**athlete_data, country=country)
+        athlete = Athlete.objects.create(**validated_data, country=country)
 
         return athlete
