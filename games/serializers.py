@@ -7,7 +7,7 @@ class GameEventSerializer(serializers.ModelSerializer):
     competition_id = serializers.IntegerField(source="id", read_only=True)
     sport = serializers.SlugRelatedField(
         slug_field="name",
-        queryset=Sport.objects.all(),
+        read_only=True
     )
     competition = serializers.CharField(source="name")
 
@@ -41,12 +41,19 @@ class GameSerializer(serializers.ModelSerializer):
         return game
 
 
+class EventGameSerializer(serializers.ModelSerializer):
+    class Meta():
+        model = Game
+        exclude = ["events"]
+
+
 class EventSerializer(serializers.ModelSerializer):
+    sport = serializers.CharField()
+    game = EventGameSerializer()
     competition = serializers.SlugRelatedField(
         slug_field="name",
         queryset=Sport.objects.all(),
     )
-    sport = serializers.CharField()
 
     class Meta:
         model = Event
