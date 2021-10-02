@@ -1,8 +1,10 @@
-from rest_framework.viewsets import ModelViewSet
+from django.db.models import F
+
+from rest_framework.viewsets import ModelViewSet, ReadOnlyModelViewSet
 from rest_framework.decorators import action
 from rest_framework.response import Response
 
-from .models import Game, Sport
+from .models import Game, Sport, Event
 from .serializers import GameSerializer, GameEventSerializer, EventSerializer
 
 
@@ -25,7 +27,7 @@ class GameViewSet(ModelViewSet):
             name=event_serializer.data.get("competition"), sport=sport
         )
 
-        serialized_event = EventSerializer(new_event)
+        serialized_event = GameEventSerializer(new_event)
 
         return Response(serialized_event.data)
 
@@ -37,3 +39,8 @@ class GameViewSet(ModelViewSet):
                 many=True,
             ).data
         )
+
+
+class EventViewSet(ReadOnlyModelViewSet):
+    queryset = Event.objects.annotate(sport=F("competition__sport__name"))
+    serializer_class = EventSerializer

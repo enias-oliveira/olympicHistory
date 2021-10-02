@@ -1,12 +1,15 @@
 from rest_framework import serializers
 
-from .models import Game, Sport, Competition
+from .models import Game, Sport, Competition, Event
 
 
-class EventSerializer(serializers.ModelSerializer):
-    competition_id = serializers.IntegerField(source="id",read_only=True)
-    competition = serializers.CharField(source="name", read_only=True)
-    sport = serializers.SlugRelatedField(slug_field="name", read_only=True)
+class GameEventSerializer(serializers.ModelSerializer):
+    competition_id = serializers.IntegerField(source="id", read_only=True)
+    sport = serializers.SlugRelatedField(
+        slug_field="name",
+        queryset=Sport.objects.all(),
+    )
+    competition = serializers.CharField(source="name")
 
     class Meta:
         model = Competition
@@ -14,7 +17,7 @@ class EventSerializer(serializers.ModelSerializer):
 
 
 class GameSerializer(serializers.ModelSerializer):
-    events = EventSerializer(many=True)
+    events = GameEventSerializer(many=True)
 
     class Meta:
         model = Game
@@ -29,7 +32,7 @@ class GameSerializer(serializers.ModelSerializer):
         def create_competition(evt):
             sport = Sport.objects.get_or_create(name=evt["sport"])[0]
             return Competition.objects.get_or_create(
-                name=evt["name"],
+                name=evt["competition"],
                 sport=sport,
             )[0]
 
@@ -38,6 +41,13 @@ class GameSerializer(serializers.ModelSerializer):
         return game
 
 
-class GameEventSerializer(serializers.Serializer):
-    competition = serializers.CharField(required=True)
-    sport = serializers.CharField(required=True)
+class EventSerializer(serializers.ModelSerializer):
+    competition = serializers.SlugRelatedField(
+        slug_field="name",
+        queryset=Sport.objects.all(),
+    )
+    sport = serializers.CharField()
+
+    class Meta:
+        model = Event
+        fields = "__all__"
