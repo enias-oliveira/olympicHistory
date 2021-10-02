@@ -1,5 +1,7 @@
 from django.db import models
 
+from games.models import Event
+
 
 class Country(models.Model):
     name = models.CharField(max_length=255)
@@ -26,3 +28,5 @@ class Athlete(models.Model):
         on_delete=models.RESTRICT,
         related_name="athletes",
     )
+
+    events = models.ManyToManyField(Event, related_name="athletes")
