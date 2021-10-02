@@ -1,38 +1,42 @@
 from rest_framework import serializers
 
-from .models import Game, Sport, Event
+from .models import Game, Sport, Event, Competition
 
 
-class SportSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Sport
-        fields = ["name"]
-
-
-class EventSerializer(serializers.ModelSerializer):
-    sport = SportSerializer(many=True)
+class GameCompetitionSerializer(serializers.ModelSerializer):
+    event_id = serializers.SerializerMethodField()
+    sport = serializers.SlugRelatedField(slug_field="name", read_only=True)
+    competition = serializers.CharField(source="name", read_only=True)
 
     class Meta:
-        model = Event
-        fields = "__all__"
+        model = Competition
+        fields = ["event_id", "competition", "sport"]
 
-
-class GameEventField(serializers.RelatedField):
-    def to_representation(self, value: Competition):
-        event = Event.objects.get(competition=value)
-
-        serialized_game_event = {
-            "id": event.id,
-            "competition": value.name,
-            "sport": value.sport.name,
-        }
-
-        return serialized_game_event
+    def get_event_id(self, obj: Competition):
+        event = Event.objects.get(competition=obj)
+        return event.id
 
 
 class GameSerializer(serializers.ModelSerializer):
-    events = GameEventField(many=True, read_only=True)
+    events = GameCompetitionSerializer(many=True)
 
     class Meta:
         model = Game
         fields = "__all__"
+
+    def create(self, validated_data):
+        validated_data.pop("events")
+        game = Game.objects.get_or_create(**validated_data)[0]
+
+        raw_events = self.initial_data.get("events")
+
+        def create_competition(evt):
+            sport = Sport.objects.get_or_create(name=evt["sport"])[0]
+            return Competition.objects.get_or_create(
+                name=evt["name"],
+                sport=sport,
+            )[0]
+
+        game.events.set([create_competition(evt) for evt in raw_events])
+
+        return game
