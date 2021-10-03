@@ -14,7 +14,27 @@ class AthleteMedalSerializer(MedalSerializer):
         fields = ["id", "medal_class", "event"]
 
 
+class CountryAthleteSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Athlete
+        fields = ["id", "name"]
+
+
 class CountrySerializer(serializers.ModelSerializer):
+    medals = serializers.SerializerMethodField()
+    athletes = CountryAthleteSerializer(many=True)
+
+    class Meta:
+        model = Country
+        fields = ["id", "name", "noc", "athletes", "medals"]
+
+    def get_medals(self, obj):
+        return AthleteMedalSerializer(
+            Medal.objects.filter(athletes__id__in=[obj.athletes.only("id")]), many=True
+        ).data
+
+
+class AthleteCountrySerializer(CountrySerializer):
     class Meta:
         model = Country
         fields = ["noc", "name"]
@@ -42,7 +62,7 @@ class AthleteRelatedField(serializers.RelatedField):
 
 class AthleteCountryField(AthleteRelatedField):
     queryset = Country.objects.all()
-    serializer_class = CountrySerializer
+    serializer_class = AthleteCountrySerializer
 
     def to_internal_value(self, data):
         return self.queryset.get(name=data)
