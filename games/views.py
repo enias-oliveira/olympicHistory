@@ -14,18 +14,18 @@ class GameViewSet(ModelViewSet):
 
     @action(detail=True, methods=["post"])
     def events(self, request, pk):
-        event_serializer = GameEventSerializer(data=request.data)
+        event_serializer = EventSerializer(data=request.data)
+        event_serializer.is_valid(raise_exception=True)
 
         game = self.get_object()
-        event_serializer.is_valid(raise_exception=True)
 
         sport = Sport.objects.get_or_create(
             name=event_serializer.data.get("sport"),
         )[0]
 
-        new_event = game.events.create(
+        new_event = game.events.update_or_create(
             name=event_serializer.data.get("competition"), sport=sport
-        )
+        )[0]
 
         serialized_event = GameEventSerializer(new_event)
 
@@ -34,7 +34,7 @@ class GameViewSet(ModelViewSet):
     @events.mapping.get
     def list_events(self, request, pk):
         return Response(
-            EventSerializer(
+            GameEventSerializer(
                 self.get_object().events,
                 many=True,
             ).data
@@ -42,5 +42,8 @@ class GameViewSet(ModelViewSet):
 
 
 class EventViewSet(ReadOnlyModelViewSet):
-    queryset = Event.objects.annotate(sport=F("competition__sport__name"))
+    queryset = Event.objects.annotate(
+        sport=F("competition__sport__name"),
+        competition_name=F("competition__name"),
+    )
     serializer_class = EventSerializer

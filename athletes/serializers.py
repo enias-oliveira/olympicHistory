@@ -47,8 +47,8 @@ class AthleteEventsField(serializers.RelatedField):
 
     def to_representation(self, value: Event):
         value.sport = value.competition.sport.name
-        serialized_medal = EventSerializer(value)
-        return serialized_medal.data
+        serialized_event = EventSerializer(value)
+        return serialized_event.data
 
     def to_internal_value(self, data):
         return self.queryset.get(pk=data)

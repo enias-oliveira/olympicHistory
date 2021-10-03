@@ -57,7 +57,9 @@ class GameSerializer(serializers.ModelSerializer):
         return data
 
 
-class EventGameSerializer(serializers.ModelSerializer):
+class EventGameSerializer(GameSerializer):
+    events = None
+
     class Meta():
         model = Game
         exclude = ["events"]
@@ -65,11 +67,8 @@ class EventGameSerializer(serializers.ModelSerializer):
 
 class EventSerializer(serializers.ModelSerializer):
     sport = serializers.CharField()
-    game = EventGameSerializer()
-    competition = serializers.SlugRelatedField(
-        slug_field="name",
-        queryset=Sport.objects.all(),
-    )
+    game = EventGameSerializer(read_only=True)
+    competition = serializers.CharField(source="competition_name")
 
     class Meta:
         model = Event
