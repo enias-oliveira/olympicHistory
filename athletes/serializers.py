@@ -15,43 +15,52 @@ class AthleteMedalSerializer(MedalSerializer):
 
 
 class CountrySerializer(serializers.ModelSerializer):
-    class Meta():
+    class Meta:
         model = Country
         fields = ["noc", "name"]
 
 
-class AthleteCountryField(serializers.RelatedField):
-    queryset = Country.objects.all()
+class AthleteEventSerializer(EventSerializer):
+    competition = serializers.SlugRelatedField(
+        slug_field="name",
+        read_only=True,
+    )
 
+    class Meta:
+        model = Event
+        fields = "__all__"
+
+
+class AthleteRelatedField(serializers.RelatedField):
     def to_representation(self, value):
-        serialized_country = CountrySerializer(value)
-        return serialized_country.data
+        serialized_data = self.serializer_class(value)
+        return serialized_data.data
+
+    def to_internal_value(self, data):
+        return self.queryset.get(pk=data)
+
+
+class AthleteCountryField(AthleteRelatedField):
+    queryset = Country.objects.all()
+    serializer_class = CountrySerializer
 
     def to_internal_value(self, data):
         return self.queryset.get(name=data)
 
 
-class AthleteMedalsField(serializers.RelatedField):
+class AthleteMedalsField(AthleteRelatedField):
     queryset = Medal.objects.all()
+    serializer_class = AthleteMedalSerializer
+
+
+class AthleteEventsField(AthleteRelatedField):
+    queryset = Event.objects.all()
+    serializer_class = AthleteEventSerializer
 
     def to_representation(self, value):
-        serialized_medal = AthleteMedalSerializer(value)
-        return serialized_medal.data
-
-    def to_internal_value(self, data):
-        return self.queryset.get(pk=data)
-
-
-class AthleteEventsField(serializers.RelatedField):
-    queryset = Event.objects.all()
-
-    def to_representation(self, value: Event):
         value.sport = value.competition.sport.name
-        serialized_event = EventSerializer(value)
-        return serialized_event.data
-
-    def to_internal_value(self, data):
-        return self.queryset.get(pk=data)
+        serialized_data = self.serializer_class(value)
+        return serialized_data.data
 
 
 class AthleteSerializer(serializers.ModelSerializer):
