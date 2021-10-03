@@ -40,6 +40,22 @@ class GameSerializer(serializers.ModelSerializer):
 
         return game
 
+    def to_representation(self, instance):
+        current_representation = super().to_representation(instance)
+
+        current_representation["season"] = dict(Game.SEASON_CHOICES)[
+            current_representation["season"]
+        ]
+
+        return current_representation
+
+    def to_internal_value(self, data):
+        if data.get("season"):
+            season_full_to_short = {v: k for k, v in Game.SEASON_CHOICES}
+            data["season"] = season_full_to_short[data["season"]]
+
+        return data
+
 
 class EventGameSerializer(serializers.ModelSerializer):
     class Meta():
