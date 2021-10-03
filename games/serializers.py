@@ -73,3 +73,23 @@ class EventSerializer(serializers.ModelSerializer):
     class Meta:
         model = Event
         fields = "__all__"
+
+    def update(self, instance: Event, validated_data):
+        if validated_data.get("competition_name"):
+            competition = Competition.objects.update_or_create(
+                name=validated_data["competition_name"], sport=instance.competition.sport
+            )[0]
+            instance.competition = competition
+
+        if validated_data.get("sport"):
+            sport = Sport.objects.update_or_create(name=validated_data["sport"])[0]
+            instance.competition.sport = sport
+            instance.competition.save()
+
+        instance.save()
+
+        updated_instance = Event.objects.get(pk=instance.pk)
+        updated_instance.sport = instance.competition.sport.name
+        updated_instance.competition_name = updated_instance.competition.name
+
+        return updated_instance

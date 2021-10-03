@@ -12,5 +12,5 @@ class AthleteViewSet(ModelViewSet):
 
 
 class CountryViewSet(ModelViewSet):
-    queryset = Country.objects.annotate(medals=Count("athletes", distinct=True)).all()
+    queryset = Country.objects.all()
     serializer_class = CountrySerializer

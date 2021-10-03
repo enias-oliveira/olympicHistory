@@ -12,7 +12,7 @@ class GameViewSet(ModelViewSet):
     queryset = Game.objects.all()
     serializer_class = GameSerializer
 
-    @action(detail=True, methods=["post"])
+    @action(detail=True, methods=["post", "patch", "put"])
     def events(self, request, pk):
         event_serializer = EventSerializer(data=request.data)
         event_serializer.is_valid(raise_exception=True)
@@ -41,7 +41,7 @@ class GameViewSet(ModelViewSet):
         )
 
 
-class EventViewSet(ReadOnlyModelViewSet):
+class EventViewSet(ModelViewSet):
     queryset = Event.objects.annotate(
         sport=F("competition__sport__name"),
         competition_name=F("competition__name"),
