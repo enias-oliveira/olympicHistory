@@ -21,18 +21,11 @@ class CountryAthleteSerializer(serializers.ModelSerializer):
 
 
 class CountrySerializer(serializers.ModelSerializer):
-    medals = serializers.SerializerMethodField(read_only=True)
     athletes = CountryAthleteSerializer(many=True, read_only=True)
 
     class Meta:
         model = Country
-        fields = ["id", "name", "noc", "athletes", "medals"]
-
-    def get_medals(self, obj):
-        return AthleteMedalSerializer(
-            Medal.objects.filter(athletes__id__in=[obj.athletes.only("id")]),
-            many=True,
-        ).data
+        fields = ["id", "name", "noc", "athletes"]
 
 
 class AthleteCountrySerializer(CountrySerializer):
