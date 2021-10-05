@@ -71,7 +71,6 @@ class AthleteEventsField(AthleteRelatedField):
 
 class AthleteSerializer(serializers.ModelSerializer):
     medals = AthleteMedalsField(many=True, required=False)
-    events = AthleteEventsField(many=True, required=False)
     country = AthleteCountryField()
 
     class Meta:
