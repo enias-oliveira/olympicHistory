@@ -89,11 +89,11 @@ São modalidades esportivas praticadas em um Jogo Olimpico especifico. São usad
 Para acessar os eventos de um Jogo especifico:
 GET`api/games/1/events`
 
-![List Events](./list_events.pnh)
+![List Events](./readme_images/list_events.png)
 
 Todo evento é atrelado a um jogo, então é apenas possivel criar um evento no mesmo momento que se cria um Jogo Olimpico novo ou na suburl de um jogo especifico
 POST `api/games/1/events`
-![Create Events](./list_events.pnh)
+![Create Events](./creadme_images/reate_event.png)
 
 
 ### Atletas
@@ -104,25 +104,25 @@ Exemplos:
 `api/athletes/1`
 `api/athletes?search=Rafael`
 
-![List Athletes](./list_athletes.png)
+![List Athletes](./readme_images/list_athletes.png)
 
 Para associar um atleta a um evento ou medalha, é preciso primeiro buscar o id do mesmo e adicionar aos campos na hora de criação ou fazendo uma atualização.
 
-![Create Athletes](./create_athlete.png)
+![Create Athletes](./readme_images/create_athlete.png)
 
 
 ### Medalhas
 
-![List Medal](./list_medals.png)
+![List Medal](./readme_images/list_medals.png)
 
 Medalhas estão diretamente ligadas a um evento, logo para criar uma é preciso de um evento para associar a mesma. Com o id de uma medalha é possivel associar ela para vários atletas.
 
-![Create Medal](./create_medal.png)
+![Create Medal](./readme_images/create_medal.png)
 
 ### Países
 Lista de Países e seus NOC, é possivel ter acesso a todas as medalhas / eventos / Jogos atráves de seus atletas, interessante implementar no futuro mas precisa ser implementado da forma correta. 
 
-![List Country](./list_countries.png)
+![List Country](./readme_images/list_countries.png)
 
 
 ### Scripts de Seed
