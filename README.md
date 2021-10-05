@@ -58,6 +58,6 @@ Exemplos:
 `api/games/1`
 `api/games?year=2012`
 
-![./readme_images/list_games.png]
+![List Games]( ./readme_images/list_games.png )
 
 Tambem podem ser filtrados por Ano e/ou Cidade atráves dos parametros name e city na url.
