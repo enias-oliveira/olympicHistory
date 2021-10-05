@@ -161,4 +161,4 @@ REST_FRAMEWORK = {
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-ALLOWED_HOSTS = ["enias-kompose.herokuapp.com", "localhost","127.0.0.1"]
+ALLOWED_HOSTS = ["enias-olympic.herokuapp.com", "localhost", "127.0.0.1"]
