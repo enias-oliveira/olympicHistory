@@ -14,18 +14,10 @@ class AthleteMedalSerializer(MedalSerializer):
         fields = ["id", "medal_class", "event"]
 
 
-class CountryAthleteSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Athlete
-        fields = ["id", "name"]
-
-
 class CountrySerializer(serializers.ModelSerializer):
-    athletes = CountryAthleteSerializer(many=True, read_only=True)
-
     class Meta:
         model = Country
-        fields = ["id", "name", "noc", "athletes"]
+        fields = ["id", "name", "noc"]
 
 
 class AthleteCountrySerializer(CountrySerializer):
