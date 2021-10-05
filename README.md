@@ -43,6 +43,18 @@ A API salva os dados em um banco de dados PostgreSQL para fácil deploy no Herok
 Também é possivel usar uma versão "Teste", que usa o SQLite, basta adicionar uma variável de ambiente TEST=True
 
 
+## Diagrama Relacional
+
+![Diagrama Relacional](./readme_images/db_relationship.png)
+
+Segue a função das tabelas e suas carateristicas 
+
+- Pais e Atletas são representações unicas de cada.
+- Jogo (Game) é a repressentaçaõ de um jogo Olimpico, definido por Ano, Cidade e Temporada. 
+- Eventos e Competições. Uma competição representa uma modalidade especifica de um esporte. Exemplo, Futebol de Praia, que faz parte do Esporte Futebol. Uma competição pode acontecer em mais de uma olimpiada. Logo uma competição que acontece em uma Olimpiada é um Evento. 
+- Medalhas são identificadas por 4 carateristicas, O Jogo Olimpico a qual foi conquistada, a modalidade, classe (Ouro, Prata, Bronze) e o vencedor. Assim, cada medalha está atrelada a um Evento (Jogo e Modalidade especifica) e um ou mais atletas (Jogos coletivos contam como uma medalha mas todos integrantes recebem um)
+
+
 ## Variaveis de ambiente
 
 O arquivo "dev.env" é onde se espera colocar as variáveis de ambiente relacionadas ao Banco PostgreSQL local
@@ -61,3 +73,8 @@ Exemplos:
 ![List Games]( ./readme_images/list_games.png )
 
 Tambem podem ser filtrados por Ano e/ou Cidade atráves dos parametros name e city na url.
+
+Na criação de um Jogo, é possivel criar os eventos que aconteceram.
+
+![Create Game](./readme_images/create_game.png)
+
