@@ -2,11 +2,11 @@ from django.db import models
 
 
 class Sport(models.Model):
-    name = models.CharField(max_length=255)
+    name = models.CharField(max_length=255, unique=True)
 
 
 class Competition(models.Model):
-    name = models.CharField(max_length=255)
+    name = models.CharField(max_length=255, unique=True)
 
     sport = models.ForeignKey(
         Sport, on_delete=models.RESTRICT, related_name="competitions"
@@ -23,7 +23,7 @@ class Game(models.Model):
     )
 
     city = models.CharField(max_length=255)
-    year = models.PositiveIntegerField()
+    year = models.PositiveIntegerField(unique=True)
     season = models.CharField(max_length=6, choices=SEASON_CHOICES)
 
     events = models.ManyToManyField(

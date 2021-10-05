@@ -71,9 +71,24 @@ class AthleteEventsField(AthleteRelatedField):
 
 class AthleteSerializer(serializers.ModelSerializer):
     medals = AthleteMedalsField(many=True, required=False)
-    events = AthleteEventsField(many=True, required=False)
     country = AthleteCountryField()
 
     class Meta:
         model = Athlete
         fields = "__all__"
+
+    def to_representation(self, instance):
+        current_representation = super().to_representation(instance)
+
+        current_representation["sex"] = dict(Athlete.SEX_CHOICES)[
+            current_representation["sex"]
+        ]
+
+        return current_representation
+
+    def to_internal_value(self, data):
+        if data.get("sex"):
+            season_full_to_short = {v: k for k, v in Athlete.SEX_CHOICES}
+            data["sex"] = season_full_to_short[data["sex"]]
+
+        return data

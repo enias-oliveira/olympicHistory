@@ -1,6 +1,6 @@
 from django.db.models import F
 
-from rest_framework.viewsets import ModelViewSet, ReadOnlyModelViewSet
+from rest_framework.viewsets import ModelViewSet
 from rest_framework.decorators import action
 from rest_framework.response import Response
 
@@ -9,7 +9,7 @@ from .serializers import GameSerializer, GameEventSerializer, EventSerializer
 
 
 class GameViewSet(ModelViewSet):
-    queryset = Game.objects.all()
+    queryset = Game.objects.prefetch_related("events").all()
     serializer_class = GameSerializer
 
     @action(detail=True, methods=["post", "patch", "put"])

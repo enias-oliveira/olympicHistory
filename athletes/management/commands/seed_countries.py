@@ -33,7 +33,7 @@ class Command(BaseCommand):
             print(f"Creating { len(countries) } Country Objects")
 
             try:
-                Country.objects.bulk_create(countries)
+                Country.objects.bulk_create(countries, ignore_conflicts=True)
                 print("Countries Seeding succesfull")
             except Exception:
                 print("Seed Failed, Exception")

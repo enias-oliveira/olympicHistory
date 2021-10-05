@@ -4,8 +4,8 @@ from games.models import Event
 
 
 class Country(models.Model):
-    name = models.CharField(max_length=255)
-    noc = models.CharField(max_length=3)
+    name = models.CharField(max_length=255, unique=True)
+    noc = models.CharField(max_length=3, unique=True)
     notes = models.CharField(max_length=255, blank=True)
 
 
@@ -17,9 +17,8 @@ class Athlete(models.Model):
         ("F", FEMALE),
     )
 
-    name = models.CharField(max_length=255)
+    name = models.CharField(max_length=255, unique=True)
     sex = models.CharField(max_length=1, choices=SEX_CHOICES)
-    age = models.PositiveIntegerField()
     height = models.PositiveIntegerField(null=True, blank=True)
     weight = models.PositiveIntegerField(null=True, blank=True)
 

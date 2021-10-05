@@ -17,8 +17,6 @@ class GameEventSerializer(serializers.ModelSerializer):
 
 
 class GameSerializer(serializers.ModelSerializer):
-    events = GameEventSerializer(many=True)
-
     class Meta:
         model = Game
         fields = "__all__"
