@@ -19,3 +19,6 @@ class Medal(models.Model):
 
     event = models.ForeignKey(Event, on_delete=models.CASCADE)
     athletes = models.ManyToManyField(Athlete, related_name="medals")
+
+    class Meta:
+        indexes = [models.Index(fields=["medal_class"])]

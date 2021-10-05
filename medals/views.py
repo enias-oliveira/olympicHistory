@@ -7,3 +7,4 @@ from .serializers import MedalSerializer
 class MedalViewSet(ModelViewSet):
     queryset = Medal.objects.all()
     serializer_class = MedalSerializer
+    filterset_fields = ["medal_class"]

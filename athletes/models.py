@@ -8,6 +8,9 @@ class Country(models.Model):
     noc = models.CharField(max_length=3, unique=True)
     notes = models.CharField(max_length=255, blank=True)
 
+    class Meta:
+        indexes = [models.Index(fields=["name", "noc"])]
+
 
 class Athlete(models.Model):
     MALE = "Male"
@@ -29,3 +32,6 @@ class Athlete(models.Model):
     )
 
     events = models.ManyToManyField(Event, related_name="athletes")
+
+    class Meta:
+        indexes = [models.Index(fields=["name"])]

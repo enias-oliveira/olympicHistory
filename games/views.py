@@ -1,5 +1,6 @@
 from django.db.models import F
 
+from rest_framework import filters
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.decorators import action
 from rest_framework.response import Response
@@ -11,6 +12,8 @@ from .serializers import GameSerializer, GameEventSerializer, EventSerializer
 class GameViewSet(ModelViewSet):
     queryset = Game.objects.prefetch_related("events").all()
     serializer_class = GameSerializer
+    filter_backends = [filters.SearchFilter]
+    search_fields = ["year", "city"]
 
     @action(detail=True, methods=["post", "patch", "put"])
     def events(self, request, pk):

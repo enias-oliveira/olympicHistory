@@ -4,6 +4,9 @@ from django.db import models
 class Sport(models.Model):
     name = models.CharField(max_length=255, unique=True)
 
+    class Meta:
+        indexes = [models.Index(fields=["name"])]
+
 
 class Competition(models.Model):
     name = models.CharField(max_length=255, unique=True)
@@ -11,6 +14,9 @@ class Competition(models.Model):
     sport = models.ForeignKey(
         Sport, on_delete=models.RESTRICT, related_name="competitions"
     )
+
+    class Meta:
+        indexes = [models.Index(fields=["name"])]
 
 
 class Game(models.Model):
@@ -29,6 +35,9 @@ class Game(models.Model):
     events = models.ManyToManyField(
         Competition, through="Event", through_fields=("game", "competition")
     )
+
+    class Meta:
+        indexes = [models.Index(fields=["year", "city"])]
 
 
 class Event(models.Model):
