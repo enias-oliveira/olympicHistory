@@ -1,16 +1,16 @@
 # Sobre
-Ester README tem por objetivo fornecer as informaÃ§Ãµes necessÃ¡rias para instalaÃ§Ã£o e execuÃ§Ã£o de uma API REST, feita com Django e o Django Rest framework, que usa um [Dataset de 120 anos de historia das Olimpíadas](https://www.kaggle.com/heesoo37/120-years-of-olympic-history-athletes-and-results#athlete_events.csv).
+Ester README tem por objetivo fornecer as informações necessárias para instalação e execução de uma API REST, feita com Django e o Django Rest framework, que usa este [Dataset de 120 anos de historia das Olimpíadas](https://www.kaggle.com/heesoo37/120-years-of-olympic-history-athletes-and-results#athlete_events.csv).
 
 
 [Instancia hospedada na Heroku](https://enias-olympic.herokuapp.com/)
 
-#  InstalaÃ§Ã£o
+#  Instalação
 
-## DependÃªncias
+## Dependências
 
-Esse projeto foi desenvolvido com [Poetry](https://python-poetry.org/), uma alternativa ao Pip para gestÃ£o de dependencias. 
+Esse projeto foi desenvolvido com [Poetry](https://python-poetry.org/), uma alternativa ao Pip para gestão de dependencias. 
  
-Dito isso, o arquivo "requirements.txt" dÃ¡ suporte para o uso do Pip.
+Dito isso, o arquivo "requirements.txt" dá suporte para o uso do Pip.
 
 ### Instalação com Docker
 
@@ -20,7 +20,7 @@ Nota se que os comandos seeds vão popular toda vez que subir os containers, rec
 
 Acessando o `localhost:8000` você terá acesso a API.
 
-### Passo-a-passo para instalaÃ§Ã£o Manual com Pip
+### Passo-a-passo para instalação Manual com Pip
 *Na linha de comando, usando Bash:*
 - 1. Criar um ambiente virtual usando venv : `python -m venv venv`
 - 2. Entrar no ambiente virtual: `source venv/bin/activate`
@@ -29,7 +29,7 @@ Acessando o `localhost:8000` você terá acesso a API.
 - 5. Rodar commando seeds `python manage.py seed_countries data/noc_regions.csv; python manage.py seed_athletes data/athlete_events.csv'`
 - 6. Iniciar servidor `python manage.py runserver 0.0.0.0:8000`
 
-### Passo-a-passo para instalaÃ§Ã£o com Poetry
+### Passo-a-passo para instalação com Poetry
 
 *Na linha de comando, usando Bash:*
 - 1. Entrar no ambiente virtual: `poetry shell`
@@ -39,7 +39,7 @@ Acessando o `localhost:8000` você terá acesso a API.
 
 ## Banco de Dados
 
-Se for rodar localmente, será necessÃ¡rio criar um Banco de dados local sem nenhuma configuraÃ§Ã£o ou tabela e depois rodar as migrations.
+Se for rodar localmente, será necessário criar um Banco de dados local sem nenhuma configuração ou tabela e depois rodar as migrations.
 
 A API salva os dados em um banco de dados PostgreSQL para fácil deploy no Heroku.
 
